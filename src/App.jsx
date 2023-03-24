@@ -1,13 +1,16 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
+import { Routes, Route, useNavigate } from 'react-router-dom'
 import './App.css'
-import { createClient } from '@supabase/supabase-js'
-import { Navigate } from 'react-router-dom/dist'
+import Home from './pages/Home'
+import Login from './pages/Login'
 
 function App() {
-
   return (
     <div className="bg-dark-grey min-h-screen">
-      <h1>Home</h1>
+      <Routes>
+        <Route path="/login" element={<Login/>}/>
+        <Route path="/home" element={<Home/>}/>
+      </Routes>
     </div>
   )
 }
