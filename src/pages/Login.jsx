@@ -11,6 +11,12 @@ const Login = () => {
 
     const navigate = useNavigate();
   
+    const signInWithGoogle = async () => {
+      await supabase.auth.signInWithOAuth({
+        provider: 'google'
+      })
+
+    }
     
     const onHandleSubmit = async (e) => {
       e.preventDefault()
@@ -43,6 +49,7 @@ const Login = () => {
           </label>
           <input type="submit" value="Submit" />
         </form>
+        <button onClick={() => signInWithGoogle()}>GOOOOOOGLE</button>
         
         {/* {logged && (<Navigate to="/home"/>)} */}
       </div>
