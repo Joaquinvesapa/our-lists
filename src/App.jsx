@@ -4,12 +4,12 @@ import './App.css'
 import Home from './pages/Home'
 import Login from './pages/Login'
 
-function App() {
+function App () {
   return (
-    <div className="bg-dark-grey min-h-screen">
+    <div className='bg-dark-grey min-h-screen'>
       <Routes>
-        <Route path="/login" element={<Login/>}/>
-        <Route path="/home" element={<Home/>}/>
+        <Route path='/' element={<Home />} />
+        <Route path='/login' element={<Login />} />
       </Routes>
     </div>
   )
