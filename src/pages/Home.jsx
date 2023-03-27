@@ -13,9 +13,9 @@ function Home () {
     })
   }, [])
   return (
-    <div className='bg-dark-grey min-h-screen'>
-      <h1>Home</h1>
-      <button onClick={() => supabase.auth.signOut()}>LogOut</button>
+    <div className='bg-dark-grey min-h-screen flex flex-col space-y-4 justify-center items-center'>
+      <h1 className='text-white font-bold text-6xl'>Home</h1>
+      <button className='font-bold text-2xl' onClick={() => supabase.auth.signOut()}>LogOut</button>
     </div>
   )
 }
