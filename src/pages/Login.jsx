@@ -117,7 +117,7 @@ const Login = () => {
 								) : null}
 							</AnimatePresence>
 						</div>
-						<LoginButton onHandleSubmit={onHandleSubmit} />
+						<LoginButton title='Login' onHandleSubmit={onHandleSubmit} />
 						<LoginGoogle signInWithGoogle={signInWithGoogle} />
 					</form>
 					<div className={clsx('flex space-x-1 mt-7')}>

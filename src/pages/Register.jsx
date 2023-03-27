@@ -1,15 +1,44 @@
 import clsx from 'clsx'
-import React, { useEffect, useState } from 'react'
-import { useNavigate, Link } from 'react-router-dom/dist'
-import {
-	ShowPassword,
-	LoginGoogle,
-	LoginButton,
-} from '../components/buttons/Buttons'
-
+import { useState } from 'react'
+import { Link } from 'react-router-dom/dist'
+import { ShowPassword, LoginButton } from '../components/buttons/Buttons'
+import { AnimatePresence, motion } from 'framer-motion'
 import { supabase } from '../supabase/client.js'
 
 export const Register = () => {
+	const [showPsw, setShowPsw] = useState(true)
+	const [psw, setPsw] = useState('')
+	const [pswr, setPswR] = useState('')
+	const [usrName, setUsrName] = useState()
+	const [email, setEmail] = useState()
+	const [pswError, setPswError] = useState(false)
+	const [error, setError] = useState('')
+
+	const onHandleSubmit = async () => {
+		if (psw.length < 6 || psw.length > 8) {
+			setPswError(true)
+			setError('Password must be between 6 and 8 characters')
+		} else if (pswr !== psw) {
+			setPswError(true)
+			setError('Both passwords must match')
+		} else {
+			try {
+				const { data, error } = await supabase.auth.signUp({
+					email,
+					password: psw,
+					options: {
+						data: {
+							username: usrName,
+						},
+					},
+				})
+				console.log(data, error)
+			} catch (error) {
+				console.log(error)
+			}
+		}
+	}
+
 	return (
 		<div className='bg-dark-grey min-h-screen'>
 			<div className='grid place-content-center ali pt-44 gap-10'>
@@ -18,22 +47,36 @@ export const Register = () => {
 				</h1>
 				<div
 					className={clsx(
-						'w-96 h-96 pt-8',
+						'w-96 h-auto pt-8',
 						'bg-md-grey rounded-3xl',
 						'flex flex-col items-center',
 						'drop-shadow-2xl'
 					)}
 				>
-					<p className='text-white font-bold text-2xl'>Welcome</p>
+					<p className='text-white font-bold text-2xl'>Register</p>
 					<form
+						className={clsx('flex flex-col items-center w-64')}
 						onSubmit={(e) => onHandleSubmit}
-						className={clsx('flex flex-col items-center')}
 					>
 						<div className='flex mt-10 bg-md2-grey rounded-full w-full py-1 px-2'>
 							<input
-								placeholder='Email'
+								placeholder='Username'
+								onChange={(e) => setUsrName(e.target.value)}
 								type='email'
+								className={clsx(
+									'bg-md2-grey pl-1',
+									'text-white',
+									'placeholder:font-bold',
+									'placeholder:text-gray-50',
+									'outline-none'
+								)}
+							/>
+						</div>
+						<div className='flex mt-6 bg-md2-grey rounded-full w-full py-1 px-2'>
+							<input
+								placeholder='Email'
 								onChange={(e) => setEmail(e.target.value)}
+								type='email'
 								className={clsx(
 									'bg-md2-grey pl-1',
 									'text-white',
@@ -45,9 +88,24 @@ export const Register = () => {
 						</div>
 						<div className='flex mt-6 bg-md2-grey w-full rounded-full py-1 px-2'>
 							<input
+								id='psw'
 								placeholder='Password'
-								type={showPsw ? 'password' : 'text'}
 								onChange={(e) => setPsw(e.target.value)}
+								type={showPsw ? 'password' : 'text'}
+								className={clsx(
+									'bg-md2-grey pl-1',
+									'text-white',
+									'placeholder:font-bold',
+									'placeholder:text-gray-50',
+									'outline-none'
+								)}
+							/>
+						</div>
+						<div className='flex mt-6 bg-md2-grey w-full rounded-full py-1 px-2'>
+							<input
+								placeholder='Repeat Password'
+								onChange={(e) => setPswR(e.target.value)}
+								type={showPsw ? 'password' : 'text'}
 								className={clsx(
 									'bg-md2-grey pl-1',
 									'text-white',
@@ -58,13 +116,29 @@ export const Register = () => {
 							/>
 							<ShowPassword showPsw={showPsw} setShowPsw={setShowPsw} />
 						</div>
-						<LoginButton onHandleSubmit={onHandleSubmit} />
-						<LoginGoogle signInWithGoogle={signInWithGoogle} />
+						<div className='h-auto flex text-center mt-2'>
+							<AnimatePresence>
+								{pswError ? (
+									<motion.p
+										initial={{ y: 40, opacity: 0 }}
+										animate={{ y: 0, opacity: 1 }}
+										exit={{ y: 40, opacity: 0 }}
+										onAnimationComplete={() => {
+											setTimeout(() => setPswError(false), 5000)
+										}}
+										className={clsx(' text-red-500 font-bold')}
+									>
+										{error}
+									</motion.p>
+								) : null}
+							</AnimatePresence>
+						</div>
+						<LoginButton title='Register' onHandleSubmit={onHandleSubmit} />
 					</form>
 					<div className={clsx('flex space-x-1 mt-7')}>
-						<p className={clsx('text-white')}>Do you have account?</p>
-						<Link to='/register' className={clsx('text-green font-bold')}>
-							Register
+						<p className={clsx('text-white mb-10')}>Do you have account?</p>
+						<Link to='/login' className={clsx('text-green font-bold')}>
+							Login
 						</Link>
 					</div>
 				</div>

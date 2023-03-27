@@ -1,4 +1,3 @@
-import React, { useState } from 'react'
 import { EyeSlashIcon, EyeIcon } from '@heroicons/react/24/solid'
 import clsx from 'clsx'
 import { motion } from 'framer-motion'
@@ -42,7 +41,7 @@ export const ShowPassword = (props) => {
 }
 
 export const LoginButton = (props) => {
-	const { onHandleSubmit } = props
+	const { onHandleSubmit, title } = props
 
 	return (
 		<div className='w-full'>
@@ -56,7 +55,7 @@ export const LoginButton = (props) => {
 					'drop-shadow-xl'
 				)}
 			>
-				Login
+				{title}
 			</button>
 		</div>
 	)
