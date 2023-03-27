@@ -1,7 +1,5 @@
 import React from 'react'
 
 export const LoginGoogle = () => {
-  return (
-    <div>LoginGoogle</div>
-  )
+	return <div>LoginGoogle</div>
 }
