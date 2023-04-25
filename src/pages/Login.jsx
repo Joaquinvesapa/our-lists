@@ -42,7 +42,6 @@ const Login = () => {
 
 	useEffect(() => {
 		supabase.auth.onAuthStateChange((event, session) => {
-			console.log(session)
 			if (!session) {
 				navigate('/login')
 			} else {
@@ -50,13 +49,12 @@ const Login = () => {
 			}
 		})
 	}, [])
-	console.log(showPsw)
 
 	return (
-		<div className='bg-dark-grey min-h-screen'>
-			<div className='grid place-content-center ali pt-44 gap-10'>
+		<div className='bg-dark-grey min-h-screen '>
+			<div className='flex justify-center items-center flex-col pt-20 2xl:pt-40 gap-10'>
 				<h1 className='text-white font-bold text-7xl text-center drop-shadow-2xl'>
-					OurList
+					OurLists
 				</h1>
 				<div
 					className={clsx(
@@ -108,7 +106,7 @@ const Login = () => {
 										animate={{ y: 0 }}
 										exit={{ y: 40 }}
 										onAnimationComplete={() => {
-											setTimeout(() => setPswError(false), 10000)
+											setTimeout(() => setPswError(false), 5000)
 										}}
 										className={clsx(' text-red-500 font-bold')}
 									>

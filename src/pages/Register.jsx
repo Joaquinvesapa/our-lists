@@ -1,6 +1,6 @@
 import clsx from 'clsx'
-import { useState } from 'react'
-import { Link } from 'react-router-dom/dist'
+import { useState, useEffect } from 'react'
+import { Link, useNavigate } from 'react-router-dom/dist'
 import { ShowPassword, LoginButton } from '../components/buttons/Buttons'
 import { AnimatePresence, motion } from 'framer-motion'
 import { supabase } from '../supabase/client.js'
@@ -13,6 +13,8 @@ export const Register = () => {
 	const [email, setEmail] = useState()
 	const [pswError, setPswError] = useState(false)
 	const [error, setError] = useState('')
+
+	const navigate = useNavigate()
 
 	const onHandleSubmit = async () => {
 		if (psw.length < 6 || psw.length > 8) {
@@ -32,12 +34,33 @@ export const Register = () => {
 						},
 					},
 				})
-				console.log(data, error)
+				const { user } = await supabase.auth.getSession()
+				console.log(user)
+				// if (data.user.aud !== null) {
+				// 	setPswError(true)
+				// 	setError('The user is already exist. Please Login')
+				// 	return
+				// } else if (data !== null) {
+				// 	navigate('/verify-email')
+				// }
 			} catch (error) {
 				console.log(error)
 			}
 		}
 	}
+
+	useEffect(() => {
+		const { data, error } = supabase.from('paises').select()
+		console.log(data)
+
+		supabase.auth.onAuthStateChange((event, session) => {
+			if (!session) {
+				navigate('/register')
+			} else {
+				navigate('/')
+			}
+		})
+	}, [])
 
 	return (
 		<div className='bg-dark-grey min-h-screen'>

@@ -6,6 +6,9 @@ function Home() {
 	const navigate = useNavigate()
 
 	useEffect(() => {
+		const { data, error } = supabase.from('auth.user').select()
+		console.log(data, error)
+
 		supabase.auth.onAuthStateChange((event, session) => {
 			if (!session) {
 				navigate('/login')
@@ -20,6 +23,10 @@ function Home() {
 				onClick={() => supabase.auth.signOut()}
 			>
 				LogOut
+			</button>
+
+			<button onClick={() => console.log(supabase.from('users').select())}>
+				Ver users
 			</button>
 		</div>
 	)
